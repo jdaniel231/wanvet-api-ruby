@@ -1,4 +1,7 @@
 class Api::V1::ClientsController < ApplicationController
+  # skip_before_action :authenticate_request
+  before_action :set_client, only: %i[show update destroy]
+  
   def index
     # GET /api/v1/clients
     @clients = Client.all
