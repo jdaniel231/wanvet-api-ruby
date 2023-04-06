@@ -5,13 +5,13 @@ class Api::V1::ClientsController < ApplicationController
   def index
     # GET /api/v1/clients
     @clients = Client.all
-    render json: @clients
+    render json: @clients, include: :animals
   end
 
   def show
     # GET /api/v1/clients/:id
     @client = Client.find(params[:id])
-    render json: @client
+    render json: @client, include: :animals
   end
 
   def create
@@ -42,9 +42,18 @@ class Api::V1::ClientsController < ApplicationController
     head :no_content
   end
 
+  def client_animals
+    @client = Client.find(params[:client_id])
+    @animals = @client.animals
+    render json: @animals
+  end
+
   private
+  def set_client
+    @client = Client.find(params[:id])
+  end
 
   def client_params
-    params.require(:client).permit(:name, :phone, :user_id)
+    params.require(:client).permit(:name, :phone, :user_id, animals_attributes: [:name, :id, :_destroy, :kg, :client_id])
   end
 end
