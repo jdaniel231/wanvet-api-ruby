@@ -3,7 +3,9 @@ class Api::V1::ServicesController < ApplicationController
   before_action :set_service, only: %i[show update destroy]
 
   def index   
-    @services = Service.all
+    @services = Service.joins(:animal, :user).select(
+      'services.*, animals.name as animal_name, users.name as user_name'
+    ).all
     render json: @services
   end
 
