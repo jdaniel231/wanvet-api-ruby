@@ -5,7 +5,7 @@ class Api::V1::ServicesController < ApplicationController
   def index   
     @services = Service.joins(:animal, :user).select(
       'services.*, animals.name as animal_name, users.name as user_name'
-    ).all
+    ).order(created_at: :desc).all
     render json: @services
   end
 
