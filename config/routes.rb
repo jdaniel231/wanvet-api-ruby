@@ -10,7 +10,11 @@ Rails.application.routes.draw do
         resources :animals, except: [:new, :edit]
       end
       resources :animals
-      resources :services
+      resources :services do
+        collection do
+          get 'newset'
+        end
+      end
     end
   end
 end
