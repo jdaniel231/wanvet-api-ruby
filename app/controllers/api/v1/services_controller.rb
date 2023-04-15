@@ -3,11 +3,19 @@ class Api::V1::ServicesController < ApplicationController
   before_action :set_service, only: %i[show update destroy]
 
   def index   
-    @services = Service.joins(:animal, :user).select(
-      'services.*, animals.name as animal_name, users.name as user_name'
-    ).order(created_at: :desc).all
+    @services = Service.joins(animal: { client: [] }, user: [])
+                       .select('services.*, animals.name as animal_name, clients.name as client_name, users.name as user_name')
+                       .order(created_at: :desc).all
     render json: @services
   end
+
+  def newset
+    @services = Service.joins(animal: { client: [] }, user: [])
+                        .select('services.*, animals.name as animal_name, clients.name as client_name, users.name as user_name')
+                        .order(created_at: :desc).all
+    render json: @services
+  end
+  
 
   def show 
     @service = Service.find(params[:id])
