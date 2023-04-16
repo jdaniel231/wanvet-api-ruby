@@ -1,4 +1,8 @@
 class Service < ApplicationRecord
+  acts_as_paranoid
+
   belongs_to :user
-  belongs_to :animal
+  belongs_to :animal, optional: true
+
+  
 end

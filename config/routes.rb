@@ -6,13 +6,21 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :clients do
+        collection do
+          get 'sum_clients'
+        end
         get 'animals', to: 'clients#client_animals'
         resources :animals, except: [:new, :edit]
       end
-      resources :animals
+      resources :animals do
+        collection do
+          get 'sum_animals'
+        end
+      end      
       resources :services do
         collection do
           get 'newset'
+          get 'sum_services'
         end
       end
     end
