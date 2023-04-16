@@ -37,6 +37,12 @@ class Api::V1::AnimalsController < ApplicationController
     end
   end
 
+  def sum_animals
+    total_sum = Animal.where(deleted_at: nil).count
+
+    render json: { total_sum: total_sum }
+  end
+
   private
 
   def set_animal

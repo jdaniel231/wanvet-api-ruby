@@ -17,6 +17,7 @@ gem 'jwt'
 gem 'simple_command'
 gem 'dotenv-rails', '~> 2.1', '>= 2.1.1'
 gem "pg", "~> 1.1"
+gem 'paranoia', '~> 2.6'
 
 
 # Use ActiveStorage variant

@@ -48,6 +48,13 @@ class Api::V1::ClientsController < ApplicationController
     render json: @animals
   end
 
+
+  def sum_clients
+    total_sum = Client.where(deleted_at: nil).count
+
+    render json: { total_sum: total_sum }
+  end
+
   private
   def set_client
     @client = Client.find(params[:id])

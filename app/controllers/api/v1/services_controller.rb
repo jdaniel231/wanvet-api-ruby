@@ -3,16 +3,19 @@ class Api::V1::ServicesController < ApplicationController
   before_action :set_service, only: %i[show update destroy]
 
   def index   
-    @services = Service.joins(animal: { client: [] }, user: [])
-                       .select('services.*, animals.name as animal_name, clients.name as client_name, users.name as user_name')
-                       .order(created_at: :desc).all
-    render json: @services
+    @services = Service.joins('LEFT JOIN animals ON animals.id = services.animal_id')
+                        .joins('LEFT JOIN clients ON clients.id = animals.client_id')
+                        .joins(:user)
+                        .select('services.*, animals.name as animal_name, clients.name as client_name, users.name as user_name')
+                        .order(created_at: :desc)
+                        .all
+      render json: @services
   end
 
   def newset
     @services = Service.joins(animal: { client: [] }, user: [])
                         .select('services.*, animals.name as animal_name, clients.name as client_name, users.name as user_name')
-                        .order(created_at: :desc).all
+                        .order(created_at: :desc).limit(5)
     render json: @services
   end
   
@@ -46,6 +49,12 @@ class Api::V1::ServicesController < ApplicationController
     @service = Service.find(params[:id])
     @service.destroy
     head :no_content
+  end
+
+  def sum_services
+    total_sum = Service.where(user_id: current_user.id, deleted_at: nil).count(:user_id)
+
+    render json: { total_sum: total_sum }
   end
 
   private
