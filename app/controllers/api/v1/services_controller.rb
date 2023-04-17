@@ -53,10 +53,17 @@ class Api::V1::ServicesController < ApplicationController
 
   def sum_services
     total_sum = Service.where(user_id: current_user.id, deleted_at: nil).count(:user_id)
+    
+    render json: { total_sum: total_sum }
+  end
+  
+  def sum_total_services
+    total_sum = Service.where( deleted_at: nil).count(:id)
 
     render json: { total_sum: total_sum }
   end
 
+  
   private
   def set_service
     @service = Service.find(params[:id])

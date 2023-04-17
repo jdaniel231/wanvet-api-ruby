@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         collection do
           get 'newset'
           get 'sum_services'
+          get 'sum_total_services'
         end
       end
     end
