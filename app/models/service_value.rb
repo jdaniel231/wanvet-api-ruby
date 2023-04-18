@@ -1,0 +1,2 @@
+class ServiceValue < ApplicationRecord
+end
