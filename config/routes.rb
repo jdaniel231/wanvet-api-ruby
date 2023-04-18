@@ -24,6 +24,7 @@ Rails.application.routes.draw do
           get 'sum_total_services'
         end
       end
+      resources :service_values
     end
   end
 end
