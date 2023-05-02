@@ -43,10 +43,6 @@ class Api::V1::ServiceValuesController < ApplicationController
   end
 
   def service_value_params
-    params.require(:service_value).permit(
-      :id,
-      :name,
-      :value
-    )
+    params.require(:service_value).permit(:name, :value)
   end
 end
