@@ -55,6 +55,6 @@ class Api::V1::AnimalsController < ApplicationController
   end
 
   def animal_params
-    params.require(:animal).permit(:name, :kg)
+    params.require(:animal).permit(:name, :kg, :age, :castrated, :species, :sex, :breed)
   end
 end

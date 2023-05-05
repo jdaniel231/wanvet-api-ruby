@@ -64,6 +64,6 @@ class Api::V1::ClientsController < ApplicationController
     params.require(:client).permit(:name, :phone, :user_id, :document_number, 
       :address, :address_number, :address_compl, :neighborhood, :zip_code,
       :city, :state,
-      animals_attributes: [:name, :id, :_destroy, :kg, :client_id])
+      animals_attributes: [:name, :id, :_destroy, :kg, :client_id, :age, :castrated, :species, :sex, :breed])
   end
 end
