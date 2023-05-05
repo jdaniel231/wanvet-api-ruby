@@ -70,6 +70,6 @@ class Api::V1::ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:petetion, :process, :animal_id, :user_id)
+    params.require(:service).permit(:petetion, :obs, :animal_id, :user_id, :kg)
   end
 end
