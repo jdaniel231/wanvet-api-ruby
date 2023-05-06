@@ -9,7 +9,7 @@ class AuthenticationController < ApplicationController
   # will be called for the first time with user name and password and return
   # the token if valid
   def authenticate
-    command = AuthenticateUserHelper.call(params[:email], params[:password])
+    command = AuthenticateUserHelper.call(params[:email], params[:password], params[:role])
     if command.success?
       json_response(auth_token: command.result[0], user: command.result[1])
     else

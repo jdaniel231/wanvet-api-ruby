@@ -1,18 +1,13 @@
-# frozen_string_literal: true
-
 class AuthenticateUserHelper
   prepend SimpleCommand
 
-  # need to initialize for the data for the command
-  def initialize(email, password)
+  def initialize(email, password, role)
     @email = email
     @password = password
+    @role = role
   end
 
-  # this method will be needed by command
-  # since this is for the
   def call
-    # after user login, will pass the user-id to the JWT to create token
     return nil unless user
 
     return JsonWebToken.create_token(user_id: user.id), user
@@ -20,16 +15,14 @@ class AuthenticateUserHelper
 
   private
 
-  attr_accessor :email, :password
+  attr_accessor :email, :password, :role
 
   def user
-    # check with username and password to login and fetch the user object
-    user = User.find_by_email(email)
-    # authenticate is coming from has_secure_password from bcrypt gem
+    user = User.find_by(email: email, role: role)
     if user && user.authenticate(password)
       user
     else
-      errors.add(:user_authentication, 'invalid user name or password')
+      errors.add(:user_authentication, 'invalid email or password')
       nil
     end
   end
