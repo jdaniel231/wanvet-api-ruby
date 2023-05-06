@@ -35,6 +35,7 @@ class Api::V1::BudgetsController < ApplicationController
   def update
     @budget = Budget.find(params[:id])
     if @budget.update(budget_params)
+      @budget.update(received_box: current_user.id)
       render json: @budget
     else
       render json: @budget.errors, status: :unprocessable_entity
@@ -63,6 +64,6 @@ class Api::V1::BudgetsController < ApplicationController
   end
 
   def budget_params
-    params.require(:budget).permit(:service_id, :user_id, :total_value, :payment_type, :status, budget_services_attributes: [:id, :service_value_id, :discount, :total_value, :_destroy])
+    params.require(:budget).permit(:service_id, :user_id, :total_value, :payment_type, :status, :received_box, budget_services_attributes: [:id, :service_value_id, :discount, :total_value, :_destroy])
   end
 end
