@@ -13,8 +13,10 @@ class Api::V1::ServicesController < ApplicationController
   end
 
   def newset
-    @services = Service.joins(animal: { client: [] }, user: [])
+    @services = Service.joins(animal: { client: [] })
+                        .joins('LEFT JOIN users ON users.id = services.user_id')  
                         .select('services.*, animals.name as animal_name, clients.name as client_name, users.name as user_name')
+                        .where('services.created_at >= ?', 24.hours.ago)
                         .order(created_at: :desc).limit(5)
     render json: @services
   end

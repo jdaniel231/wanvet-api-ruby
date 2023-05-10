@@ -2,7 +2,8 @@ class Api::V1::BudgetsController < ApplicationController
   before_action :set_budget, only: %i[show update destroy destroy_service create_budget_service]
 
   def index
-    @budgets = Budget.joins(service: { animal: :client }, user: {})
+    @budgets = Budget.joins(service: { animal: :client })
+                      .joins('LEFT JOIN users ON users.id = budgets.user_id')
                       .select('budgets.*, animals.name as animal_name, clients.name as client_name')
                       .order(created_at: :desc)
     render json: @budgets
@@ -26,12 +27,27 @@ class Api::V1::BudgetsController < ApplicationController
     end
   end
 
+  
   def show
-    # GET /api/v1/budgets/:id
-    @budget = Budget.find(params[:id])
-    render json: @budget, include: :budget_services
+    @budget = Budget.includes(:budget_services => :service_value).find(params[:id])
+  
+    render json: @budget.to_json(include: { 
+      budget_services: { 
+        include: :service_value,
+        except: [:created_at, :updated_at]
+      }
+    }, except: [:created_at, :updated_at])
   end
 
+  def budget_recent
+    @budgets = Budget.joins(service: { animal: :client })
+                      .joins('LEFT JOIN users ON users.id = budgets.user_id')
+                      .select('budgets.*, animals.name as animal_name, clients.name as client_name')
+                      .where('services.created_at >= ?', 24.hours.ago)
+                      .order(created_at: :desc)
+    render json: @budgets
+  end
+  
   def update
     @budget = Budget.find(params[:id])
     if @budget.update(budget_params)
