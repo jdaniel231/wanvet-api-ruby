@@ -1,3 +1,3 @@
 class ServiceValue < ApplicationRecord
-  # belongs_to :budget_service
+  has_many :budget_services
 end

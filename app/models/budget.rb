@@ -2,6 +2,7 @@ class Budget < ApplicationRecord
   belongs_to :user
   belongs_to :service
   has_many :budget_services, dependent: :destroy
+  has_many :service_values, through: :budget_services
 
   accepts_nested_attributes_for :budget_services, allow_destroy: true
 

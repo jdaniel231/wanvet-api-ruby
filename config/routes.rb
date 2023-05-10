@@ -28,6 +28,9 @@ Rails.application.routes.draw do
       end
       resources :service_values
       resources :budgets do 
+        collection do
+          get 'budget_recent'
+        end
         resources :budget_services, only: [:create]
         member do
           delete 'budget_services/:budget_service_id', to: 'budgets#destroy_service'
