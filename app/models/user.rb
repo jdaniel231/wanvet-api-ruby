@@ -1,5 +1,6 @@
 class User < ApplicationRecord
     has_secure_password
+    acts_as_paranoid
 
     enum role: { admin: 0, doctor: 1, frontdesk: 2 }
 

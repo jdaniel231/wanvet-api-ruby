@@ -5,7 +5,7 @@ class Api::V1::ServicesController < ApplicationController
   def index   
     @services = Service.joins('LEFT JOIN animals ON animals.id = services.animal_id')
                         .joins('LEFT JOIN clients ON clients.id = animals.client_id')
-                        .joins(:user)
+                        .joins('LEFT JOIN users ON users.id = services.user_id')
                         .select('services.*, animals.name as animal_name, clients.name as client_name, users.name as user_name')
                         .order(created_at: :desc)
                         .all
